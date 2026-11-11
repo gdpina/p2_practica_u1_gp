@@ -1,23 +1,26 @@
 package ec.edu.uce.pa.paquete.interceptor;
 
+import ec.edu.uce.pa.paquete.Usuario;
 import jakarta.annotation.Priority;
 import jakarta.interceptor.AroundInvoke;
 import jakarta.interceptor.Interceptor;
 import jakarta.interceptor.InvocationContext;
 
 @Interceptor 
-@MedirTiempo 
+@Auditoria 
 @Priority(Interceptor.Priority.APPLICATION + 20)
-public class MedirTiempoInterceptor {
+public class AuditoriaInterceptor {
 
     @AroundInvoke 
     public Object Interceptor(InvocationContext context) throws Exception{
 
-        long init = System.currentTimeMillis();
+        Usuario usuario = (Usuario) context.getParameters()[0];
+
+        System.out.println("[Auditando] a: " + usuario.getNombre() + ", ID: " + usuario.getId());
+
         Object resultado = context.proceed();
-        long fin = System.currentTimeMillis();
-        System.out.println("[Tiempo Medido]: " + (fin-init));
 
         return resultado;
+
     }
 }
